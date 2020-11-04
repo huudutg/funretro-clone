@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import axios from 'axios';
 
+axios.defaults.baseURL = 'https://funretro-be.herokuapp.com/'
+// axios.defaults.baseURL = 'http://localhost:3300/'
 ReactDOM.render(
   <React.StrictMode>
     <App />

@@ -1,0 +1,76 @@
+.profile {
+    width: 400px;
+    padding: 2em;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    background: white;
+    border-radius: 0.125rem;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    &_wrap {
+        width: 90%;
+        & .titlte {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        & .input {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            & input {}
+            & .MuiFormControl-root {
+                margin-top: 15px;
+            }
+        }
+        & .sub-content {
+            float: right;
+            margin-top: 5px;
+            color: #9c27b0;
+            margin-bottom: 10px;
+            &:hover {
+                cursor: pointer;
+            }
+            &-re {
+                margin-top: 5px;
+                color: #a3a3a3;
+                margin-bottom: 10px;
+                font-size: 0.8rem;
+            }
+        }
+        & .btn-group {
+            & button {
+                width: 100%;
+                margin-top: 10px;
+                height: 41px;
+            }
+        }
+        & .check {
+            & .MuiFormControlLabel-root {
+                align-items: flex-start;
+            }
+            & .PrivateSwitchBase-root-5 {
+                padding-top: 1px;
+            }
+            & span {
+                color: #8a8a8a;
+            }
+        }
+        & .change {
+            text-align: center;
+            margin-top: 30px;
+            & span {
+                color: #9c27b0;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            & a {
+                text-decoration: none;
+            }
+        }
+    }
+}

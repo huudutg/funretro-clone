@@ -1,0 +1,111 @@
+.board_title {
+    display: flex;
+    margin-top: 7px;
+    & .left {
+        display: flex;
+        flex: 1;
+        margin-left: 15px;
+        & .title_wrap {
+            flex: 1;
+            display: flex;
+            // align-items: center;
+            // justify-content: center;
+            &-input {
+                margin-right: 5px;
+            }
+            &-context {
+                display: flex;
+                flex: 1;
+                & input {
+                    flex: 1;
+                    padding: 5px;
+                    padding-left: 10px;
+                }
+            }
+            & .context {
+                margin-left: 15px;
+                border: 1px solid rgb(253, 253, 253);
+                &:focus {
+                    border: 1px solid #000;
+                }
+            }
+            & .name {
+                padding: 5px;
+                padding-left: 10px;
+                font-size: 1.3rem;
+                font-weight: 600;
+                border: 1px solid rgb(253, 253, 253);
+                &:focus {
+                    border: 1px solid #000;
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            & input {
+                height: 23px;
+            }
+            &-btn {
+                display: flex;
+                align-items: center;
+                &:hover {
+                    cursor: pointer;
+                }
+                & .save {
+                    background: #00c853;
+                    border-bottom: 2px solid #00a946;
+                    width: 40px;
+                    height: 24px;
+                    padding: 0;
+                    border: none;
+                    color: #fff;
+                    border-radius: 3px;
+                    &:hover {
+                        cursor: pointer;
+                        background: #04913f;
+                    }
+                }
+                & .cancel {
+                    width: 55px;
+                    height: 24px;
+                    background: none;
+                    border: none;
+                    color: rgb(105, 172, 248);
+                    &:hover {
+                        cursor: pointer;
+                        background: #cdfce0;
+                    }
+                }
+            }
+        }
+    }
+    & .right {
+        display: flex;
+        & button {
+            background-color: #8e24aa;
+            color: #fff;
+            padding: 5px;
+            margin-left: 14px;
+            border-radius: 4px;
+            &:hover {
+                background-color: #8f5a9e;
+                cursor: pointer;
+            }
+        }
+        & .icon {
+            display: flex;
+            margin-left: 10px;
+            color: #8e24aa;
+            align-items: center;
+            & svg {
+                font-size: 1.3rem;
+            }
+            &-setting {
+                margin-right: 15px;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

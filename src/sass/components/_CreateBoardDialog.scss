@@ -1,0 +1,59 @@
+.dialog-create-board {}
+
+.MuiDialog-paperWidthSm {
+    & .MuiTypography-h6 {
+        font-size: 2rem;
+        text-align: center;
+        font-weight: 600 !important;
+    }
+    & .updown-btn {
+        display: flex;
+        flex-direction: column;
+        margin-right: -20px;
+    }
+    & .MuiIconButton-root {
+        padding: 0;
+    }
+    & .MuiInputBase-input {
+        height: 1.5rem;
+    }
+    & .MuiInputLabel-animated {
+        font-size: larger;
+    }
+    & .template {
+        font-size: 1.5rem;
+        margin-top: 20px;
+    }
+    & .btn-option {
+        display: flex;
+        margin-top: 15px;
+        & .MuiButton-outlinedSecondary {
+            flex: 1;
+        }
+        & .left {
+            margin-right: 10px;
+        }
+    }
+    & .option {
+        margin-left: 10px;
+        margin-top: 20px;
+        & .MuiFormControlLabel-root {
+            margin-bottom: 10px;
+        }
+        & .MuiTypography-body1 {
+            font-size: 1.2rem;
+        }
+    }
+    & .MuiDialogContent-root {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    & .btn-confirm {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 25px;
+        & .MuiButton-containedSecondary {
+            width: 100%;
+        }
+    }
+}

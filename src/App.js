@@ -1,25 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './sass/style.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  // Link,
+} from "react-router-dom";
+import Board from './components/Board/Board.js';
+import DashBoard from './components/Home/Dashboard.js'
+import ProtectUser from './ProtectUser';
+import OAuth from './components/OAuth/OAuth';
+import Profile from './components/Profile/Profile';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+
+        <Switch>
+          <Route path="/login">
+            <OAuth />
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <Route path="/register">
+            <OAuth />
+          </Route>
+          <ProtectUser>
+            <Route path="/dashboard">
+              <h1>
+                login
+            </h1>
+            </Route>
+            <Route path="/board/:id">
+              <Board />
+            </Route>
+            <Route exact path="/">
+              <DashBoard />
+            </Route>
+          </ProtectUser>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
