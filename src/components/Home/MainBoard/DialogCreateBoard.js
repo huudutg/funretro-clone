@@ -9,11 +9,9 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import Cookies from "js-cookie";
 
 const DialogCreateBoard = ({ onChange }) => {
     let history = useHistory();
-    const temp = Cookies.get("token");
 
     const [board, setBoard] = useState({
         name: '',
@@ -26,16 +24,14 @@ const DialogCreateBoard = ({ onChange }) => {
         // setOpen(false);
     };
     const handleCreate = () => {
-        console.log('board', board)
-        const data = { ...board, uid: temp }
-        console.log('data', data)
+        const data = { ...board }
         axios({
             method: 'post',
             url: '/dashboard/createBoard',
-            data
+            data,
+            withCredentials: true
         })
             .then(function (response) {
-                console.log('response', response.data._id)
                 const id = response.data._id;
                 history.push(`/board/${id}`);
             })
@@ -62,7 +58,6 @@ const DialogCreateBoard = ({ onChange }) => {
 
     const handleNameChange = (event) => {
         setBoard({ ...board, name: event.target.value });
-        // console.log('board', board)
     };
 
     const { gilad, jason, antoine } = state;

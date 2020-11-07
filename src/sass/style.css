@@ -330,7 +330,9 @@
   display: flex;
 }
 
-.board_title .right button {
+.board_title .right .btn-share,
+.board_title .right .btn-new {
+  height: 30px;
   background-color: #8e24aa;
   color: #fff;
   padding: 5px;
@@ -338,7 +340,8 @@
   border-radius: 4px;
 }
 
-.board_title .right button:hover {
+.board_title .right .btn-share:hover,
+.board_title .right .btn-new:hover {
   background-color: #8f5a9e;
   cursor: pointer;
 }
@@ -525,7 +528,7 @@
   padding: 0 0;
 }
 
-.mainboard .boardlist .makeStyles-t-4 {
+.mainboard .boardlist .addboard-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -541,18 +544,21 @@
           align-items: center;
   border: 2.5px dashed #cacaca;
   background-color: #f3f3f3;
+  color: #8e24aa;
+  height: 80px;
+  padding: 24px;
 }
 
-.mainboard .boardlist .makeStyles-t-4 svg {
+.mainboard .boardlist .addboard-btn svg {
   font-size: 4rem;
 }
 
-.mainboard .boardlist .makeStyles-t-4:hover {
+.mainboard .boardlist .addboard-btn:hover {
   border: 2.5px dashed #8e24aa;
   cursor: pointer;
 }
 
-.mainboard .boardlist .makeStyles-t-4 span {
+.mainboard .boardlist .addboard-btn span {
   font-weight: 600;
 }
 
@@ -740,6 +746,10 @@
   cursor: pointer;
 }
 
+.dashboard-nav-wrap img:hover {
+  cursor: pointer;
+}
+
 .dashboard .option-tab {
   position: relative;
 }
@@ -758,7 +768,9 @@
 
 .dashboard .option-tab .MenuOption__wrap {
   width: 94%;
-  padding-bottom: 11px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .dashboard .option-tab .MenuOption__wrap--active {
@@ -776,11 +788,15 @@
   color: #a3acb9;
 }
 
-.dashboard .option-tab .MenuOption__wrap a {
-  margin-right: 30px;
+.dashboard .option-tab .MenuOption__wrap .option {
+  margin-right: 20px;
   padding-bottom: 1px;
   padding: 8px 0px;
   text-decoration: none;
+}
+
+.dashboard .option-tab .MenuOption__wrap .option:hover {
+  cursor: pointer;
 }
 
 .MuiDialog-paperWidthSm .MuiTypography-h6 {
@@ -872,6 +888,10 @@
 .dragdrop .add-card {
   margin: 10px 10px;
   background-color: #fff;
+}
+
+.dragdrop .add-card input {
+  width: 95%;
 }
 
 .dragdrop .add-wrap {
@@ -1155,6 +1175,33 @@
   width: 100%;
   margin-top: 10px;
   height: 41px;
+}
+
+.oauth .login_wrap .btn-group .my-facebook-button-class {
+  border: none;
+  background-color: #0a81ec;
+  font-weight: 700;
+  color: #ffff;
+}
+
+.oauth .login_wrap .btn-group .btn-logingg {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.oauth .login_wrap .btn-group .btn-logingg div {
+  padding: 0 !important;
+}
+
+.oauth .login_wrap .btn-group .btn-logingg span {
+  font-weight: 700 !important;
 }
 
 .oauth .login_wrap .check .MuiFormControlLabel-root {

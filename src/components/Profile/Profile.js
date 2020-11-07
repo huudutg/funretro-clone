@@ -1,20 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {
-
-    Link,
-} from "react-router-dom";
+import TextField from '@material-ui/core/TextField';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import axios from 'axios';
 import Cookies from "js-cookie";
-import { useHistory } from "react-router-dom";
-import { Alert, AlertTitle } from '@material-ui/lab';
+import React, { useEffect, useState } from 'react';
 import DashBoardNavbar from '../Home/DashBoardNavbar';
 const Profile = () => {
     const [input, setinput] = useState({ name: '', email: '', password: '' })
     const [alert, setalert] = useState(false);
     const [success, setsuccess] = useState(false)
-    const temp = Cookies.get("token");
 
     const handleChange = (prop) => (event) => {
         setinput({ ...input, [prop]: event.target.value });
@@ -25,12 +19,12 @@ const Profile = () => {
         if (input.name && input.email && input.password) {
             axios({
                 method: 'post',
-                url: `/user/update/${temp}`,
-                data: input
+                url: `/user/update`,
+                data: input,
+                withCredentials: true
             })
                 .then(function (response) {
-                    console.log('board', response)
-                    if (response.status == 200) {
+                    if (response.status === 200) {
                         setsuccess(true);
                         setTimeout(() => {
                             setsuccess(false)
@@ -55,10 +49,9 @@ const Profile = () => {
 
 
     useEffect(() => {
-        axios.get(`user/${temp}`)
+        axios.get(`user/profile`, { withCredentials: true })
             .then(function (response) {
                 setinput({ name: response.data.name, email: response.data.email })
-                console.log('response.data', response.data)
             })
             .catch(function (error) {
 

@@ -12,13 +12,11 @@ function Board() {
     const { id } = useParams();
     const [board, setboard] = useState({})
     useEffect(() => {
-        console.log('iaaaaaaaaad', id)
         axios({
             method: 'get',
             url: `/dashboard/${id}`,
         })
             .then(function (response) {
-                console.log('board', response)
 
                 setboard({ ...response.data })
             })

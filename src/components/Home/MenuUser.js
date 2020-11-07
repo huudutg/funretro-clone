@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SettingsIcon from '@material-ui/icons/Settings';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Cookies from "js-cookie";
+import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 
 const StyledMenu = withStyles({

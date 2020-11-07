@@ -4,6 +4,9 @@
     & .add-card {
         margin: 10px 10px;
         background-color: #fff;
+        & input {
+            width: 95%;
+        }
     }
     & .add-wrap {
         background-color: #e7e4e4 !important;

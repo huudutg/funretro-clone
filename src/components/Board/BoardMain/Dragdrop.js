@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import EditIcon from '@material-ui/icons/Edit';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import axios from 'axios';
-import {
-    useParams
-} from "react-router-dom";
+import Pusher from 'pusher-js';
+import React, { useEffect, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import ReactDOM from "react-dom";
+
 // fake data generator
-const getItems = (count, offset = 0) =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k + offset}-${new Date().getTime()}`,
-        content: `item ${k + offset}`
-    }));
+// const getItems = (count, offset = 0) =>
+//     Array.from({ length: count }, (v, k) => k).map(k => ({
+//         id: `item-${k + offset}-${new Date().getTime()}`,
+//         content: `item ${k + offset}`
+//     }));
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -64,6 +63,13 @@ export default function QuoteApp({ id, Item }) {
     const [state, setState] = useState([[], [], []]);
     // const [state, setState] = useState([getItems(10), getItems(1, 10), getItems(5, 15)]);
     const [addOpen, setaddOpen] = useState([false, false, false])
+    Pusher.logToConsole = true;
+
+
+    var pusher = new Pusher('fc572aa65b3feee3d449', {
+        cluster: 'ap1'
+    });
+
 
     function onDragEnd(result) {
         const { source, destination } = result;
@@ -80,6 +86,7 @@ export default function QuoteApp({ id, Item }) {
             const newState = [...state];
             newState[sInd] = items;
             setState(newState);
+            postState(newState)
         } else {
             const result = move(state[sInd], state[dInd], source, destination);
             const newState = [...state];
@@ -87,6 +94,8 @@ export default function QuoteApp({ id, Item }) {
             newState[dInd] = result[dInd];
 
             setState(newState);
+            postState(newState)
+
         }
     }
 
@@ -95,29 +104,22 @@ export default function QuoteApp({ id, Item }) {
         newAdd[stt] = true;
         setaddOpen(newAdd);
         document.getElementById(`add-wrap${stt}`).style.display = 'flex'
-
-        // console.log("state", state)
-        // const t = document.getElementById(`add${stt}`).value
-        // const item = {
-        //     id: `item-${stt}-${new Date().getTime()}`,
-        //     content: t
-        // }
-        // const newState = [...state];
-        // newState[stt] = [item, ...newState[stt]];
-        // setState(newState)
     }
     const handleAddBtn = (stt) => {
 
 
         const t = document.getElementById(`add${stt}`).value
         const item = {
-            _id: `item-${stt}-${new Date().getTime()}`,
+            id: `item-${stt}-${new Date().getTime()}`,
             content: t
         }
         const newState = [...state];
         newState[stt] = [item, ...newState[stt]];
         setState(newState)
+        postState(newState)
         document.getElementById(`add-wrap${stt}`).style.display = 'none'
+        document.getElementById(`add${stt}`).value = ''
+
 
     }
     const handleEdit = (ind, index, item) => {
@@ -135,44 +137,46 @@ export default function QuoteApp({ id, Item }) {
 
         const newState = [...state];
         newState[ind][index].content = c
-        setState(
-            newState
-        );
+        setState(newState);
+        postState(newState)
         const b = document.getElementById(`edit${ind}-${index}`);
         b.style.display = 'none';
         document.getElementById(`wrap${ind}-${index}`).style.display = '';
     }
+    const channel = pusher.subscribe('fun');
 
 
     useEffect(() => {
-        console.log('state', state)
-        if (state.length != 0 && (state[0].length != 0 || state[1].length != 0 || !state[2].length != 0)) {
-            axios({
-                method: 'post',
-                url: `/dashboard/edit/${id}`,
-                data: { Item: state }
+        channel.bind('id', function (data) {
+            setState(data)
+        });
+    }, []);
+
+
+
+    const postState = (data) => {
+        axios({
+            method: 'post',
+            url: `/dashboard/edit/${id}`,
+            data: { Item: data }
+        })
+            .then(function (response) {
+
             })
-                .then(function (response) {
-                    console.log('board12121', response)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });;
-        }
+            .catch(function (error) {
+                console.log(error);
+            });;
+    }
 
-    }, [state]);
 
     useEffect(() => {
-        console.log('idddddddddddddddddddd', id)
         if (id) {
             axios({
                 method: 'get',
                 url: `/dashboard/${id}`,
             })
                 .then(function (response) {
-                    console.log('response.data', response.data)
                     setState(response.data.Item)
-                    console.log('responseresponse', state)
 
                 })
                 .catch(function (error) {
@@ -227,115 +231,118 @@ export default function QuoteApp({ id, Item }) {
 
                     <div className='dragdrop'>
                         <DragDropContext onDragEnd={onDragEnd}>
-                            {state && state.map((el, ind) => (
-                                <Droppable key={ind} droppableId={`${ind}`}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            className={`drag${ind} item`}
-                                            ref={provided.innerRef}
-                                            style={getListStyle(snapshot.isDraggingOver)}
-                                            {...provided.droppableProps}
-                                        >
-                                            {
-                                                <div className="card_content-edit add-wrap" id={`add-wrap${ind}`} >
-                                                    <div className="add-card">
-                                                        <input className="search_txt" id={`add${ind}`} type="text" />
-                                                        <div className="btn-edit">
-                                                            <button
-                                                                className="save"
-                                                                type="button"
-                                                                onClick={() => handleAddBtn(ind)}
-                                                            >
-                                                                DONE
+                            {
+
+                                state && state.map((el, ind) => (
+                                    <Droppable key={ind} droppableId={`${ind}`}>
+                                        {(provided, snapshot) => (
+                                            <div
+                                                className={`drag${ind} item`}
+                                                ref={provided.innerRef}
+                                                style={getListStyle(snapshot.isDraggingOver)}
+                                                {...provided.droppableProps}
+                                            >
+                                                {
+                                                    <div className="card_content-edit add-wrap" id={`add-wrap${ind}`} >
+                                                        <div className="add-card">
+                                                            <input className="search_txt" id={`add${ind}`} type="text" />
+                                                            <div className="btn-edit">
+                                                                <button
+                                                                    className="save"
+                                                                    type="button"
+                                                                    onClick={() => handleAddBtn(ind)}
+                                                                >
+                                                                    DONE
                                                                 </button>
 
-                                                            <DeleteForeverIcon
+                                                                <DeleteForeverIcon
 
-                                                            />
+                                                                />
 
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>}
-                                            {el.map((item, index) => (
-                                                <Draggable
-                                                    key={item._id}
-                                                    draggableId={item._id}
-                                                    index={index}
-                                                >
-                                                    {(provided, snapshot) => (
-                                                        <div className="card-wrap">
-                                                            <div
-                                                                className="card"
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                style={getItemStyle(
-                                                                    snapshot.isDragging,
-                                                                    provided.draggableProps.style
-                                                                )}
-                                                            >
-                                                                <div
-
-                                                                    className="card_content"
-
-                                                                >   <div className="card-wrap" id={`wrap${ind}-${index}`}>
-                                                                        <div className="card_content-wrap" >
-                                                                            <div className="content"> {item.content}</div>
-                                                                            <div className="btn-edit">
-                                                                                <EditIcon onClick={() => handleEdit(ind, index, item)} />
-
-                                                                            </div>
-                                                                            {/* <button onClick={() => handleEdit(ind, index, item)}>edit</button> */}
-                                                                        </div>
-                                                                        <div className="like">
-                                                                            <ThumbUpAltIcon />
-                                                                            <div className="text-like">0</div>
-                                                                            <ChatBubbleIcon />
-                                                                            <div className="text-like">0</div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="card_content-edit" id={`edit${ind}-${index}`}>
-                                                                        <input className="search_txt" id={`input${ind}-${index}`} type="text" />
-                                                                        <div className="btn-edit">
-                                                                            <button
-                                                                                className="save"
-                                                                                type="button"
-                                                                                onClick={() => handleSave(ind, index)}
-                                                                            >
-                                                                                DONE
-                                                                </button>
-
-                                                                            <DeleteForeverIcon
-                                                                                onClick={() => {
-                                                                                    const newState = [...state];
-                                                                                    newState[ind].splice(index, 1);
-                                                                                    setState(newState);
-                                                                                    const b = document.getElementById(`edit${ind}-${index}`);
-                                                                                    b.style.display = 'none';
-                                                                                    document.getElementById(`wrap${ind}-${index}`).style.display = '';
-                                                                                }}
-                                                                            />
-
-                                                                        </div>
-
-                                                                    </div>
-
-
-
-                                                                </div>
                                                             </div>
                                                         </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                            ))}
+
+
+                                                    </div>}
+                                                {el.map((item, index) => (
+                                                    <Draggable
+                                                        key={item.id}
+                                                        draggableId={item.id}
+                                                        index={index}
+                                                    >
+                                                        {(provided, snapshot) => (
+                                                            <div className="card-wrap">
+                                                                <div
+                                                                    className="card"
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    style={getItemStyle(
+                                                                        snapshot.isDragging,
+                                                                        provided.draggableProps.style
+                                                                    )}
+                                                                >
+                                                                    <div
+
+                                                                        className="card_content"
+
+                                                                    >   <div className="card-wrap" id={`wrap${ind}-${index}`}>
+                                                                            <div className="card_content-wrap" >
+                                                                                <div className="content"> {item.content}</div>
+                                                                                <div className="btn-edit">
+                                                                                    <EditIcon onClick={() => handleEdit(ind, index, item)} />
+
+                                                                                </div>
+                                                                                {/* <button onClick={() => handleEdit(ind, index, item)}>edit</button> */}
+                                                                            </div>
+                                                                            <div className="like">
+                                                                                <ThumbUpAltIcon />
+                                                                                <div className="text-like">0</div>
+                                                                                <ChatBubbleIcon />
+                                                                                <div className="text-like">0</div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="card_content-edit" id={`edit${ind}-${index}`}>
+                                                                            <input className="search_txt" id={`input${ind}-${index}`} type="text" />
+                                                                            <div className="btn-edit">
+                                                                                <button
+                                                                                    className="save"
+                                                                                    type="button"
+                                                                                    onClick={() => handleSave(ind, index)}
+                                                                                >
+                                                                                    DONE
+                                                                </button>
+
+                                                                                <DeleteForeverIcon
+                                                                                    onClick={() => {
+                                                                                        const newState = [...state];
+                                                                                        newState[ind].splice(index, 1);
+                                                                                        setState(newState);
+                                                                                        postState(newState);
+                                                                                        const b = document.getElementById(`edit${ind}-${index}`);
+                                                                                        b.style.display = 'none';
+                                                                                        document.getElementById(`wrap${ind}-${index}`).style.display = '';
+                                                                                    }}
+                                                                                />
+
+                                                                            </div>
+
+                                                                        </div>
+
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                ))}
                         </DragDropContext>
                     </div>
                 </div>

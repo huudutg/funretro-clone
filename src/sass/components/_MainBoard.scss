@@ -108,13 +108,16 @@
             padding-bottom: 0px !important;
             padding: 0 0;
         }
-        & .makeStyles-t-4 {
+        & .addboard-btn {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             border: 2.5px dashed #cacaca;
             background-color: #f3f3f3;
+            color: #8e24aa;
+            height: 80px;
+            padding: 24px;
             & svg {
                 font-size: 4rem;
             }

@@ -1,16 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import Button from '@material-ui/core/Button';
-import axios from 'axios';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-import SettingsIcon from '@material-ui/icons/Settings';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import axios from 'axios';
+import Pusher from 'pusher-js';
+import React, { useEffect, useRef, useState } from "react";
+import DialogShare from './DialogShare';
 import MenuSetting from './MenuSetting';
+
 
 const BoardTitle = ({ id, name, context }) => {
     const [saveName, setsaveName] = useState(false);
     const [board, setBoard] = useState({});
     const typingRef = useRef(null)
+    Pusher.logToConsole = true;
 
+
+    var pusher = new Pusher('fc572aa65b3feee3d449', {
+        cluster: 'ap1'
+    });
 
     const handleNameClick = (params) => {
         setsaveName(true)
@@ -50,11 +56,15 @@ const BoardTitle = ({ id, name, context }) => {
                 context: value
             }
             boardChange(board)
-            console.log('board', board)
         }, 600)
     }
+    const channel = pusher.subscribe('fun');
+    useEffect(() => {
+        channel.bind('title', function (data) {
+            setBoard({ name: data.name, context: data.context })
 
-
+        });
+    }, []);
 
     useEffect(() => {
         setBoard({ name, context })
@@ -88,9 +98,8 @@ const BoardTitle = ({ id, name, context }) => {
                     <AccessAlarmIcon />
                 </div>
 
-                <button className="btn-share">
-                    Share
-                </button>
+
+                <DialogShare id={id} />
                 <button className="btn-new">
                     New column
                 </button>

@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {
-
-    Link,
-} from "react-router-dom";
+import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import Cookies from "js-cookie";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
+import {
 
-
+    Link, useHistory
+} from "react-router-dom";
 
 const Login = () => {
     let history = useHistory();
+
+
 
     const [input, setinput] = useState({ email: '', password: '' })
     const handleChange = (prop) => (event) => {
@@ -20,16 +21,22 @@ const Login = () => {
     };
 
     const handleLogin = (params) => {
+        login(input);
 
+    }
+
+
+
+    const login = (data) => {
         axios({
             method: 'post',
             url: `/user/login`,
-            data: input
+            data: data,
+            // withCredentials: true
         })
             .then(function (response) {
-                console.log('board', response)
                 if (response.data) {
-                    Cookies.set("token", response.data.id, { expires: 100 });
+                    Cookies.set("token", response.data, { expires: 100 });
                     history.push(`/`);
 
                 }
@@ -42,6 +49,17 @@ const Login = () => {
                 console.log(error);
             });
     }
+
+    const onSuccessGoogle = (res) => {
+        login({ email: res.profileObj.email, idsocial: res.profileObj.googleId })
+    }
+    const onFailureGoogle = (res) => {
+        console.log('res', res)
+    }
+    const responseFacebook = (res) => {
+        login({ email: res.email, idsocial: res.userID })
+    }
+
 
     return (
         <div className="login">
@@ -75,9 +93,25 @@ const Login = () => {
                     <Button variant="contained" onClick={handleLogin} color="secondary">
                         Login
                     </Button>
-                    <Button variant="contained" color="primary">
-                        Google login
-                    </Button>
+
+
+                    <GoogleLogin
+                        className='btn-logingg'
+                        clientId="330320688539-ii1mtj75i0ba6us5424q4q4h5bn08h72.apps.googleusercontent.com"
+                        buttonText="Login with google"
+                        onSuccess={onSuccessGoogle}
+                        onFailure={onFailureGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
+                    <FacebookLogin
+                        appId="310300306716378"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        callback={responseFacebook}
+                        cssClass="my-facebook-button-class"
+                    // icon={<TiSocialFacebookCircular />}
+                    />
+
                 </div>
                 <div className="change">
                     or  <Link to="/register"><span>Register</span></Link>

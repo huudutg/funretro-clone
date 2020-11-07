@@ -57,6 +57,23 @@
                     margin-top: 10px;
                     height: 41px;
                 }
+                & .my-facebook-button-class {
+                    border: none;
+                    background-color: #0a81ec;
+                    font-weight: 700;
+                    color: #ffff;
+                }
+                & .btn-logingg {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    & div {
+                        padding: 0 !important;
+                    }
+                    & span {
+                        font-weight: 700 !important;
+                    }
+                }
             }
             & .check {
                 & .MuiFormControlLabel-root {

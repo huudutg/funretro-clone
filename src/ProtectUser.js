@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
     Route,
     Redirect,
@@ -8,10 +8,6 @@ import Cookies from "js-cookie";
 
 function ProtectUser({ children, ...rest }) {
 
-    useEffect(() => {
-        const temp = Cookies.get("token");
-        console.log('temp', temp)
-    }, []);
 
     const location = useLocation();
     return (

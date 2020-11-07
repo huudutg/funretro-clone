@@ -12,12 +12,11 @@ const MenuOption = (props) => {
                     let className = (props.status == i + 1) ? "MenuOption__wrap--active" : "";
 
                     return (
-                        <a
-                            href="#"
-                            className={className}
+                        <div
+                            className={`${className} option`}
                             onClick={() => props.onChange(child.key)} >
                             {child}
-                        </a>
+                        </div>
 
                     )
                 })

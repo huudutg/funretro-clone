@@ -81,7 +81,9 @@
     }
     & .right {
         display: flex;
-        & button {
+        & .btn-share,
+        .btn-new {
+            height: 30px;
             background-color: #8e24aa;
             color: #fff;
             padding: 5px;
@@ -92,6 +94,7 @@
                 cursor: pointer;
             }
         }
+        .MuiIconButton-sizeSmall {}
         & .icon {
             display: flex;
             margin-left: 10px;

@@ -4,9 +4,17 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
+import Cookies from "js-cookie";
+const config = require('./config/default.json');
 
-axios.defaults.baseURL = 'https://funretro-be.herokuapp.com/'
-// axios.defaults.baseURL = 'http://localhost:3300/'
+
+// axios.defaults.baseURL = 'https://funretro-be.herokuapp.com/'
+axios.defaults.baseURL = config.url
+// if (Cookies.get("token")) {
+//   axios.defaults.withCredentials = true;
+// }
+
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

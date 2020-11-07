@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import MenuOption from './MenuOption';
 
-import MenuOption from './MenuOption'
 const OptionTab = () => {
     const [option, setOption] = useState('1');
     const onOptionClick = (a) => {

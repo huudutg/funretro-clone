@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {
-
-    Link,
-} from "react-router-dom";
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import Cookies from "js-cookie";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import {
+
+    Link, useHistory
+} from "react-router-dom";
 
 
 const Register = () => {
@@ -24,7 +23,7 @@ const Register = () => {
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked });
     };
-    const { gilad, jason, antoine } = state;
+    const { gilad } = state;
 
     const handleRegister = (params) => {
         axios({
@@ -33,9 +32,8 @@ const Register = () => {
             data: input
         })
             .then(function (response) {
-                console.log('board', response)
                 if (response.status == 200) {
-                    Cookies.set("token", response.data.id, { expires: 100 });
+                    Cookies.set("token", response.data, { expires: 100 });
                     history.push(`/`);
 
                 }

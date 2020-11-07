@@ -15,6 +15,9 @@
                     cursor: pointer;
                 }
             }
+            & img:hover {
+                cursor: pointer;
+            }
         }
     }
     & .option-tab {
@@ -27,7 +30,7 @@
             justify-content: center;
             &__wrap {
                 width: 94%;
-                padding-bottom: 11px;
+                display: flex;
                 &--active {
                     border-bottom: 4px solid #8e24aa;
                     & span {
@@ -40,11 +43,14 @@
                     text-decoration: none;
                     color: #a3acb9;
                 }
-                & a {
-                    margin-right: 30px;
+                & .option {
+                    margin-right: 20px;
                     padding-bottom: 1px;
                     padding: 8px 0px;
                     text-decoration: none;
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
         }

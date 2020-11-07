@@ -29,17 +29,15 @@ const useStyles = makeStyles((theme) => ({
 
 const BoardList = () => {
 
-    const classes = useStyles();
     const [lisBoard, setlisBoard] = useState([]);
     const [openDialog, setopenDialog] = useState(false)
 
     useEffect(() => {
         const temp = Cookies.get("token");
-        axios.get(`dashboard/getByUid/${temp}`)
+        axios.get(`dashboard/getByUid`, { withCredentials: true })
             .then(function (response) {
 
                 setlisBoard(response.data);
-                console.log('response.data', response.data)
             })
             .catch(function (error) {
 
@@ -58,7 +56,7 @@ const BoardList = () => {
                 <Grid container spacing={2}>
 
                     <Grid item sm={4} md={3} lg={2} onClick={() => setopenDialog(true)}>
-                        <Paper className={classes.t}>
+                        <Paper className='addboard-btn'>
                             <AddCircleIcon fontSize="large" />
                             <span>Add board</span></Paper>
                     </Grid>
