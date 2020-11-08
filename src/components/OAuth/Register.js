@@ -9,7 +9,11 @@ import {
 
     Link, useHistory
 } from "react-router-dom";
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const Register = () => {
     const [input, setinput] = useState({ name: '', email: '', password: '' })
@@ -26,6 +30,10 @@ const Register = () => {
     const { gilad } = state;
 
     const handleRegister = (params) => {
+        console.log('state', state)
+        if (!input.name || !input.email || !input.password) {
+            return setOpenAlert(true)
+        }
         axios({
             method: 'post',
             url: `/user/register`,
@@ -43,10 +51,18 @@ const Register = () => {
 
             })
             .catch(function (error) {
+                setOpenAlert(true)
                 console.log(error);
             });
     }
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
+        setOpenAlert(false);
+    };
 
 
 
@@ -109,6 +125,11 @@ const Register = () => {
                     or  <Link to="/login"><span>Login</span></Link>
                 </div>
             </div>
+            <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity="error">
+                    Register failed. Please check your informations again!
+                         </Alert>
+            </Snackbar>
         </div>
     );
 }

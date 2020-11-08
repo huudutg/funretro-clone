@@ -8,8 +8,8 @@ import Cookies from "js-cookie";
 const config = require('./config/default.json');
 
 
-// axios.defaults.baseURL = 'https://funretro-be.herokuapp.com/'
-axios.defaults.baseURL = config.url
+axios.defaults.baseURL = 'https://funretro-be.herokuapp.com/'
+// axios.defaults.baseURL = config.url
 // if (Cookies.get("token")) {
 //   axios.defaults.withCredentials = true;
 // }

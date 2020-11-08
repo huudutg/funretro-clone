@@ -9,7 +9,11 @@ import {
 
     Link, useHistory
 } from "react-router-dom";
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const Login = () => {
     let history = useHistory();
 
@@ -36,8 +40,17 @@ const Login = () => {
         })
             .then(function (response) {
                 if (response.data) {
-                    Cookies.set("token", response.data, { expires: 100 });
-                    history.push(`/`);
+                    console.log('response', response)
+                    if (response.status == 200) {
+
+
+                        Cookies.set("token", response.data, { expires: 100 });
+                        history.push(`/`);
+                    }
+                    else {
+                        setOpenAlert(true);
+                    }
+
 
                 }
                 else {
@@ -46,6 +59,7 @@ const Login = () => {
 
             })
             .catch(function (error) {
+                setOpenAlert(true);
                 console.log(error);
             });
     }
@@ -60,6 +74,15 @@ const Login = () => {
         login({ email: res.email, idsocial: res.userID })
     }
 
+
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
 
     return (
         <div className="login">
@@ -116,7 +139,13 @@ const Login = () => {
                 <div className="change">
                     or  <Link to="/register"><span>Register</span></Link>
                 </div>
+
             </div>
+            <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity="error">
+                    The email address or password is incorrect
+                         </Alert>
+            </Snackbar>
         </div>
     );
 }
